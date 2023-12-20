@@ -1,0 +1,6 @@
+programme en c comport les fonction suivants:
+void Lire(int A[],int d) : lire les elements d'un tableu
+void afficher(int A[],int d) : afficher les elements d'un tableu
+void trier(int A[],int d) : tri les elements d'un tableu
+int recherch(int A[],int d,int elt) 
+void main

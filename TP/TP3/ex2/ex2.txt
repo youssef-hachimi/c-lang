@@ -1,0 +1,15 @@
+ecrire le programme suivant :
+
+=============================
+||          Menu           ||
+=============================
+|   1-Lecture               |
+|   2-affichage             |
+|   3-somme                 |
+|   4-produit               |
+|   5-Scalaire              |
+|   6-distance              |
+|   7-Quitter               |
+=============================
+||   Tapez votre choix :   ||
+_____________________________
