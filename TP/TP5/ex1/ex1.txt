@@ -1,0 +1,193 @@
+}
+int valideSemestre(float NT[10], int iDdebut, int iDfin)
+{
+    int i, k = 0, res = 0;
+    float s = 0;
+    for (i = iDdebut; i <= iDfin; i++)
+    {
+        s = s + NT[i];
+        if (NT[i] >= 7)
+            k++;
+    }
+    if (s / 6 >= 12 && k == 6)
+        res = 1;
+    return (res);
+}
+int valideTousSemestres(Etudiant ETD)
+{
+    int deb, fin, k = 0, i, res = 0;
+    for (i = 0; i < 4; i++)
+    {
+        deb = 6 * i;
+        fin = deb + 5;
+        k = k + valideSemestre(ETD.notes, deb, fin);
+    }
+    if (k == 4)
+        res = 1;
+    return (res);
+}
+Etudiant *etudValideSemestres(Etud ESTBM, int n)
+{
+    Etudiant T[max];
+    int i, j = 0;
+    for (i = 0; i < n; i++)
+    {
+        if (valideTousSemestres(ESTBM[i]) == 1)
+        {
+            T[j] = ESTBM[i];
+            j++;
+        }
+    }
+    nbv = j;
+    return (T);
+}
+float moyenne(float NT[10])
+{
+    float s = 0;
+    int i;
+    for (i = 0; i < 10; i++)
+    {
+        s = s + NT[i];
+    }
+    return (s / 10);
+}
+Etudiant *etudOrdreMerite(Etud ESTBM, int n)
+{
+    Etudiant *V, et;
+    float moyennes[max], y;
+    int i, j, idmax;
+    V = etudValideSemestres(ESTBM, n);
+    for (i = 0; i < nbv; i++)
+    {
+        moyennes[i] = moyenne(V[i].notes);
+    }
+    for (i = 0; i < nbv - 1; i++)
+    {
+        idmax = i;
+        for (j = i + 1; j < nbv; j++)
+        {
+            if (moyennes[j] > moyennes[idmax])
+                idmax = j;
+        }
+        if (max != i)
+        {
+            y = moyennes[i];
+            moyennes[i] = moyennes[idmax];
+            moyennes[idmax] = y;
+            et = V[i];
+            V[i] = V[idmax];
+            V[idmax] = et;
+        }
+    }
+    return (V);
+}
+char *appreciation(float moy)
+{
+    char texte[20];
+    if (moy >= 12 && moy < 14)
+        strcpy(texte, "Assez bien");
+    if (moy >= 14 && moy < 16)
+        strcpy(texte, "Bien");
+    if (moy >= 16)
+        strcpy(texte, "Tres bien");
+}
+void mention(Etud A, int n)
+{
+    Etudiant *B;
+    int i;
+    float m;
+    B = etudOrdreMerite(A, n);
+    printf("Liste des etudiants par ordre de merite: \n");
+    for (i = 0; i < nbv; i++)
+    {
+        m = moyenne(B[i].notes);
+        printf("--> CNE: %d NOM: %s PRENOM: %s MOYENNE: %f MENTION: %s\n", B[i].cne, B[i].nom, B[i].prenom, m, appreciation(m));
+    }
+}
+main()
+{
+    int NB;
+    Etud EST;
+    printf("Entrer le nombre des etudiants à saisir:");
+    scanf("%d", &NB);
+    lecture(EST, NB);
+    affichage(EST, NB);
+    mention(EST, NB);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+On souhaite gérer les étudiants du tronc commun d’un établissement en utilisant
+un tableau de structures permettant l’enregistrement des informations concernant
+les étudiants (Nom, Prénom, CNE, Date de naissance et Notes).
+Pour cela, on considère les déclarations suivantes :
+
+#define max 50
+typedef struct { int jour;
+                 int mois;
+         int annee;
+      } Date ;
+typedef struct { char nom[20];
+                 char prenom[20];
+    int cne;
+          Date naissance;
+          float notes[24];
+      } Etudiant;
+typedef Etudiant Etud[max];  
+
+
+Ecrire un programme c contenant les fonctions suivantes :
+ void lecture(Etud A,int N) : la saisie des informations pour N étudiants.
+ void affichage(Etud A,int N) : l’affichage des informations des étudiants.
+ int valide_semestre(float NT[24],int id_debut,int id_fin) :la fonction
+retourne 1 si le semestre est validé et 0 dans le cas inverse.(un semestre
+est validé si la moyenne de 6 notes (6 modules) est >= 10 et si toutes les
+notes sont >= 7)
+ int valide_tous_semestres(Etudiant ETD) :la fonction retourne 1 si
+l’étudiant a validé tous les semestres et 0 dans le cas inverse.(il faut
+utiliser la fonction valide_semestre).
+ Etudiant* etud_valide_semestres(Etud A,int n) : la fonction retourne un
+tableau de structures contenant les informations des étudiants qui ont
+validés tous les semestres.  
+ Etudiant* etud_ordre_merite(Etud A,int n) : la fonction retourne un tableau
+de structures concernant les étudiants qui ont validés tous les semestres
+classés par ordre de mérite.
+ void mention(Etud A,int n) : la fonction affiche (le CNE, le nom, le prénom,
+la moyenne et la mention) des étudiants qui ont validé tous les semestres
+par ordre de mérite.(Passable : 10<=moyenne<12, Assez bien : 12<=moyenne<14,
+Bien : 14<=moyenne<16 et Très bien : 16<=moyenne).
+ main() : un jeu d’essais des fonctions précédentes.    
